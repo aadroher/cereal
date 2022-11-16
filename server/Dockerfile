@@ -18,6 +18,8 @@ RUN wget https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERS
   && chmod +x /bin/entrykit \
   && entrykit --symlink
 
+RUN chmod +x /cereal/server/prehook
+
 ENTRYPOINT [ \
   "prehook", "ruby -v", "--", \
   "prehook", "/cereal/server/prehook", "--"]
