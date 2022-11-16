@@ -19,7 +19,9 @@ services:
       - db
   client:
     container_name: client
-    build: ./client
+    image: "node:14-alpine"
+    user: "node"
+    working_dir: /cereal/client
     volumes:
       - ./client:/cereal/client
     command: "yarn dev"
