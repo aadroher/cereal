@@ -3,7 +3,7 @@
 version: '3.9'
 services:
   db:
-    container_name: postgres
+    container_name: cereal_db
     image: postgres:15
     volumes:
       - ./data/db:/var/lib/postgresql/data
@@ -20,11 +20,11 @@ services:
   client:
     container_name: client
     build: ./client
-    user: "node"
+    user: node
     working_dir: /cereal/client
     volumes:
       - ./client:/cereal/client
-    command: "yarn dev"
+    command: yarn start
     depends_on:
       - server
   yaichi:
