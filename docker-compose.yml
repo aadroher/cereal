@@ -6,7 +6,7 @@ services:
     container_name: postgres
     image: postgres:15
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
   server:
@@ -19,14 +19,14 @@ services:
       - db
   client:
     container_name: client
-    image: "node:14-alpine"
+    image: "node:18.12-alpine"
     user: "node"
     working_dir: /cereal/client
     volumes:
       - ./client:/cereal/client
     command: "yarn dev"
     depends_on:
-      - backend
+      - server
   yaichi:
     container_name: yaichi
     image: mtsmfm/yaichi:1.5.0
