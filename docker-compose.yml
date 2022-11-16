@@ -19,7 +19,7 @@ services:
       - db
   client:
     container_name: client
-    image: "node:18.12-alpine"
+    build: ./client
     user: "node"
     working_dir: /cereal/client
     volumes:
