@@ -3,4 +3,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+
+  scope path: '/api' do
+    scope path: 'v0' do
+      get '/metrics', to: 'metrics#index'
+      post '/metrics', to: 'metrics#create'
+    end
+  end
 end
