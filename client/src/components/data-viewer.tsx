@@ -1,7 +1,8 @@
 import React from "react";
-import PropTypes from 'prop-types';
 
-const DataViewer = () => {
+type DataViewerProps = {}
+
+const DataViewer = (props: DataViewerProps): JSX.Element => {
   return <div>The data viewer</div>;
 }
 
