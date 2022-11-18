@@ -5,6 +5,8 @@ import { faker } from "@faker-js/faker";
 
 import DataViewer, { DataPoint } from "./data-viewer";
 
+faker.seed(1984);
+
 const mockLabels = ["A", "B", "C"];
 
 const numSamples = 50;
@@ -34,7 +36,7 @@ export default {
 
 const Template: ComponentStory<typeof DataViewer> = (args) => {
   console.log(data);
-  return <DataViewer {...args} />;
+  return <DataViewer data={data} />;
 };
 
 export const Default = Template.bind({});
