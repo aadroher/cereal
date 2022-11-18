@@ -3,27 +3,33 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 
-import DataViewer, { DataPoint } from "./data-viewer";
+import DataViewer, { DataPoint, DataSeries } from "./data-viewer";
 
 faker.seed(1984);
 
-const mockLabels = ["A", "B", "C"];
+const mockLabels = ["temperature", "pressure", "insolation"];
 
 const numSamples = 50;
 
-const intialDate = DateTime.utc();
+const intialDate = DateTime.utc(2021, 3, 23, 12, 0);
 const binSizeMin = 5;
 const binRange = [...Array(numSamples).keys()];
 const minVal = 0;
-const maxVal = 100;
+const maxVal = 50;
 
-const data: DataPoint[] = mockLabels.flatMap((label) =>
-  binRange.map((i) => ({
-    timestamp: intialDate.plus({ minutes: i * binSizeMin }).toJSDate(),
-    name: label,
-    value: faker.datatype.number({ min: minVal, max: maxVal }),
-  }))
-);
+const data: DataPoint[] = binRange.map((i) => ({
+  timestamp: intialDate.plus({ minutes: i * binSizeMin }).toJSDate(),
+  values: mockLabels.reduce(
+    (values, label) => ({
+      ...values,
+      [label]: faker.datatype.number({
+        min: minVal + i * 10,
+        max: maxVal + i * 10,
+      }),
+    }),
+    {}
+  ),
+}));
 
 export default {
   title: "Components/DataViewer",
