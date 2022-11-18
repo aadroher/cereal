@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 
-import DataViewer, { DataPoint, DataSeries } from "./data-viewer";
+import DataViewer, { DataPoint } from "./data-viewer";
 
 faker.seed(1984);
 
@@ -23,8 +23,8 @@ const data: DataPoint[] = binRange.map((i) => ({
     (values, label) => ({
       ...values,
       [label]: faker.datatype.number({
-        min: minVal + i * 10,
-        max: maxVal + i * 10,
+        min: minVal + i * 1.5,
+        max: maxVal + i * 1.5,
       }),
     }),
     {}
