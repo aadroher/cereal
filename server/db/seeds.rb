@@ -24,7 +24,5 @@ NAMES.each do |name|
       value: Faker::Number.between(from: 0.0, to: 100.0)
     }
   end
-  ap metrics_data
-
   Metric.create! metrics_data
 end
