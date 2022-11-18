@@ -12,21 +12,16 @@ class MetricsController < ApplicationController
   end
 
   def averages
-    ap params
-    metrics = Metric
-              .all
-              .where(timestamp: (params[:from]..params[:to]))
-              .where(name: params[:names])
-              .order(:timestamp)
-
-    render json: metrics
+    clean_params = params
+    ap clean_params[:from]
+    averages = Metric.averages(
+      from: params[:from],
+      to: params[:to],
+      names: params[:names],
+      bin_size: params[:bin_size]
+    )
+    render json: averages
   end
 
   def create; end
-
-  private
-
-  def metric_averages_params
-    params.require(:from, :to).permit(:names, :bin_size)
-  end
 end
