@@ -1,6 +1,7 @@
 export enum ActionType {
   FETCH_DATA = "FETCH_DATA",
   RECEIVE_DATA = "RECEIVE_DATA",
+  UPDATE_SELECTED_NAMES = "UPDATE_SELECTED_NAMES",
 }
 
 export type DataPoint = {
@@ -60,7 +61,7 @@ export const rootReducer: RootReducer = (state, action) => {
       };
     }
     case ActionType.RECEIVE_DATA: {
-      // TODO: Update this responseBody is not a proper DataPoint[] (dates not parsed)
+      // TODO: Update this responseBody is not a proper DataPoint[] (dates not parsed yet)
       const responseBody = action.payload as DataPoint[];
       const newData = responseBody.map(({ timestamp, values }) => ({
         timestamp: new Date(timestamp),
@@ -71,6 +72,16 @@ export const rootReducer: RootReducer = (state, action) => {
         data: newData,
       };
     }
+    case ActionType.UPDATE_SELECTED_NAMES: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          names: action.payload as string[],
+        },
+      };
+    }
+
     default:
       return state;
   }
