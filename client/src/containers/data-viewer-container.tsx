@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 
-import { initialState, rootReducer } from "./state";
+import { initialState, rootReducer } from "../state";
 import DataViewer from "../components/data-viewer";
 import {
   handleFirstLoad,

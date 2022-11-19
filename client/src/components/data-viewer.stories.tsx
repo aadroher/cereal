@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 
 import DataViewer from "./data-viewer";
-import { DataPoint } from "../containers/state";
+import { DataPoint } from "../state";
 
 faker.seed(1984);
 

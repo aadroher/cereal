@@ -1,5 +1,5 @@
 import { fetchData } from "../data-fetcher";
-import { State, Action, ActionType } from "../containers/state";
+import { State, Action, ActionType } from "../state";
 
 type EventHandler = (args: {
   state: State;
@@ -21,10 +21,10 @@ export const handleFirstLoad: EventHandler = async ({ state, dispatch }) => {
 
 export const handleOnSelectedLabelsChange: EventHandler = ({
   dispatch,
-  payload,
+  payload: newNames,
 }) => {
   dispatch({
     type: ActionType.UPDATE_SELECTED_NAMES,
-    payload: payload as string[],
+    payload: newNames as string[],
   });
 };

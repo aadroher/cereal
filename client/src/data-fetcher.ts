@@ -1,6 +1,6 @@
 import queryString from "query-string";
 
-import { DataPoint, Filters } from "./containers/state";
+import { DataPoint, Filters } from "./state";
 
 const API_ROOT = "/api/v0";
 const METRICS_AVERAGES_PATH = "/metrics/averages";

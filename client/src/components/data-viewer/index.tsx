@@ -11,7 +11,7 @@ import {
 
 import { faker } from "@faker-js/faker";
 
-import { DataPoint } from "../../containers/state";
+import { DataPoint } from "../../state";
 
 faker.seed(6);
 
@@ -40,6 +40,7 @@ const DataViewer = ({
     ...values,
   }));
   const dataNames = getDataNames(data);
+
   return (
     <div>
       <div>
