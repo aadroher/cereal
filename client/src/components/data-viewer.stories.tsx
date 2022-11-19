@@ -40,7 +40,6 @@ export default {
   title: "Components/DataViewer",
   component: DataViewer,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof DataViewer>;
@@ -51,7 +50,13 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
   return (
     <DataViewer
       data={data}
-      selectedLabels={selectedLabels}
+      filters={{
+        names: selectedLabels,
+        dates: {
+          from: data[0].timestamp,
+          to: data[numSamples - 1].timestamp,
+        },
+      }}
       onSelectedLabelsChange={setSelectedLabels}
     />
   );

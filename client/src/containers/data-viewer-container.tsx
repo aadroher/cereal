@@ -17,7 +17,7 @@ const DataViewerContainer = (): JSX.Element => {
   return (
     <DataViewer
       data={state.data}
-      selectedLabels={state.filters.names}
+      filters={state.filters}
       onSelectedLabelsChange={(newNames) => {
         handleOnSelectedLabelsChange({
           state,
