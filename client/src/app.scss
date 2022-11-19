@@ -1,5 +1,9 @@
 .app {
+  margin: auto;
+  box-sizing: border-box;
+  // max-width: calc(1080px + 2 * 4rem);
   padding: 4rem;
+
   & > * + * {
     margin-top: 2rem;
   }
