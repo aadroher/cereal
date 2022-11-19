@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -8,7 +8,6 @@ import {
   Legend,
   Tooltip,
 } from "recharts";
-import { DateTime } from "luxon";
 
 import { faker } from "@faker-js/faker";
 faker.seed(6);
@@ -24,15 +23,19 @@ export type DataPoint = {
 
 type DataViewerProps = {
   data: DataPoint[];
+  selectedLabels: string[];
+  onSelectedLabelsChange: (newSelectedLabels: string[]) => void;
 };
 
 type GetDataNames = (data: DataPoint[]) => string[];
 const getDataNames: GetDataNames = (data) =>
   data.length > 0 ? Object.keys(data[0].values) : [];
 
-const DataViewer = ({ data }: DataViewerProps): JSX.Element => {
-  const dataNames = getDataNames(data);
-  const [selectedLabels, selectLabels] = useState(dataNames);
+const DataViewer = ({
+  data,
+  selectedLabels,
+  onSelectedLabelsChange,
+}: DataViewerProps): JSX.Element => {
   data.sort(
     ({ timestamp: ts0 }, { timestamp: ts1 }) => ts0.getTime() - ts1.getTime()
   );
@@ -40,12 +43,9 @@ const DataViewer = ({ data }: DataViewerProps): JSX.Element => {
     name: timestamp.toISOString(),
     ...values,
   }));
-  console.log({ selectedLabels });
-  console.log(dataForGraph);
-
+  const dataNames = getDataNames(data);
   return (
     <div>
-      <h1>The data viewer</h1>
       <div>
         {dataNames.map((label) => {
           const isActive = selectedLabels.includes(label);
@@ -57,7 +57,7 @@ const DataViewer = ({ data }: DataViewerProps): JSX.Element => {
                   (selectedLabel) => selectedLabel !== label
                 );
             newSelectedLabels.sort();
-            selectLabels(newSelectedLabels);
+            onSelectedLabelsChange(newSelectedLabels);
           };
           return (
             <div key={label}>

@@ -11,8 +11,6 @@ class Metric < ApplicationRecord
              .having(timestamp: (from..to))
              .order(:bin, :name)
 
-    ap result
-
     # TODO: Function composition, maybe?
     aggregate_hashes(
       group_hashes(

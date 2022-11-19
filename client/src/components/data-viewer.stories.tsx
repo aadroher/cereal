@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
@@ -16,6 +16,10 @@ const binSizeMin = 5;
 const binRange = [...Array(numSamples).keys()];
 const minVal = 0;
 const maxVal = 50;
+
+type GetDataNames = (data: DataPoint[]) => string[];
+const getDataNames: GetDataNames = (data) =>
+  data.length > 0 ? Object.keys(data[0].values) : [];
 
 const data: DataPoint[] = binRange.map((i) => ({
   timestamp: intialDate.plus({ minutes: i * binSizeMin }).toJSDate(),
@@ -42,7 +46,14 @@ export default {
 
 const Template: ComponentStory<typeof DataViewer> = (args) => {
   console.log(data);
-  return <DataViewer data={data} />;
+  const [selectedLabels, setSelectedLabels] = useState(getDataNames(data));
+  return (
+    <DataViewer
+      data={data}
+      selectedLabels={selectedLabels}
+      onSelectedLabelsChange={setSelectedLabels}
+    />
+  );
 };
 
 export const Default = Template.bind({});
