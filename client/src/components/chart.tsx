@@ -10,12 +10,33 @@ import {
   Tooltip,
 } from "recharts";
 import { faker } from "@faker-js/faker";
+import { DateTime } from "luxon";
 
 import { DataPoint, Filters } from "../state";
 
 faker.seed(6);
 
 const colourPool = [...Array(100).keys()].map(() => faker.color.rgb());
+
+type ChartDataPoint = {
+  [key: string]: string | number;
+};
+type GetDataForChart = (data: DataPoint[]) => ChartDataPoint[];
+const getDataforChart: GetDataForChart = (data) => {
+  data.sort(
+    ({ timestamp: ts0 }, { timestamp: ts1 }) => ts0.getTime() - ts1.getTime()
+  );
+
+  return data.map(({ timestamp, values }) => {
+    console.log(timestamp.toISOString());
+    const formattedTimestamp =
+      DateTime.fromJSDate(timestamp).toFormat("MM-dd HH:mm");
+    return {
+      name: formattedTimestamp,
+      ...values,
+    };
+  });
+};
 
 type ChartProps = {
   data: DataPoint[];
@@ -27,19 +48,11 @@ const getDataNames: GetDataNames = (data) =>
   data.length > 0 ? Object.keys(data[0].values) : [];
 
 const Chart = ({ data, filters }: ChartProps): JSX.Element => {
-  data.sort(
-    ({ timestamp: ts0 }, { timestamp: ts1 }) => ts0.getTime() - ts1.getTime()
-  );
-
-  const dataForGraph = data.map(({ timestamp, values }) => ({
-    name: timestamp.toISOString(),
-    ...values,
-  }));
-
   const dataNames = getDataNames(data);
+  const dataForGraph = getDataforChart(data);
 
   return (
-    <ResponsiveContainer minWidth={800} minHeight={200}>
+    <ResponsiveContainer minWidth={800} minHeight={400}>
       <LineChart data={dataForGraph}>
         <CartesianGrid strokeDasharray="3 3" />
         {filters.names.map((name, i) => (
