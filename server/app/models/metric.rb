@@ -1,6 +1,6 @@
 class Metric < ApplicationRecord
   def self.averages(from:, to:, names: [], bin_size: 60)
-    # bin_size needs sanitised
+    # TODO: bin_size needs sanitised
     result = select(
       "datetime((strftime('%s', timestamp)  / #{bin_size}) * #{bin_size}, 'unixepoch') as bin",
       'name',
@@ -8,22 +8,36 @@ class Metric < ApplicationRecord
     )
              .group(:bin, :name)
              .having(name: names)
+             .having(timestamp: (from..to))
              .order(:bin, :name)
 
     ap result
 
-    flat_hashes = result.map do |instance|
+    # TODO: Function composition, maybe?
+    aggregate_hashes(
+      group_hashes(
+        flat_hashes(result)
+      )
+    )
+  end
+
+  def self.flat_hashes(result)
+    result.map do |instance|
       {
         timestamp: instance[:bin],
         name: instance[:name],
         value: instance[:avg]
       }
     end
+  end
 
-    grouped_hashes = flat_hashes.group_by do |h|
+  def self.group_hashes(flattened_hashes)
+    flattened_hashes.group_by do |h|
       h[:timestamp]
     end
+  end
 
+  def self.aggregate_hashes(grouped_hashes)
     grouped_hashes.map do |k, v|
       {
         timestamp: k,
