@@ -1,5 +1,6 @@
-enum ActionType {
-  DATA_LOADED,
+export enum ActionType {
+  FETCH_DATA = "FETCH_DATA",
+  RECEIVE_DATA = "RECEIVE_DATA",
 }
 
 export type DataPoint = {
@@ -17,25 +18,31 @@ export type Filters = {
   names: string[];
 };
 
-type State = {
+export type State = {
   loading: boolean;
+  binSize: number;
   filters: Filters;
   data: DataPoint[];
 };
 
-type Action = {
+export type Action = {
   type: ActionType;
-  payload: unknown;
+  payload?: unknown;
 };
+
+const KNOWN_NAMES = ["temperature", "pressure", "insolation"];
+const INITIAL_DATES = {
+  from: new Date("2021-03-23T12:00:00.000Z"),
+  to: new Date("2021-03-23T12:30:00.000Z"),
+};
+const INITIAL_BIN_SIZE = 60;
 
 export const initialState: State = {
   loading: false,
+  binSize: INITIAL_BIN_SIZE,
   filters: {
-    dates: {
-      from: new Date(),
-      to: new Date(),
-    },
-    names: [],
+    dates: INITIAL_DATES,
+    names: KNOWN_NAMES,
   },
   data: [],
 };
@@ -45,8 +52,26 @@ export const rootReducer: RootReducer = (state, action) => {
   console.log({ state });
   console.log({ action });
 
-  const newState = state;
-
-  console.log({ newState });
-  return newState;
+  switch (action.type) {
+    case ActionType.FETCH_DATA: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case ActionType.RECEIVE_DATA: {
+      // TODO: Update this responseBody is not a proper DataPoint[] (dates not parsed)
+      const responseBody = action.payload as DataPoint[];
+      const newData = responseBody.map(({ timestamp, values }) => ({
+        timestamp: new Date(timestamp),
+        values,
+      }));
+      return {
+        ...state,
+        data: newData,
+      };
+    }
+    default:
+      return state;
+  }
 };
