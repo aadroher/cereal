@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export enum ActionType {
   FETCH_DATA = "FETCH_DATA",
   RECEIVE_DATA = "RECEIVE_DATA",
@@ -35,9 +37,10 @@ export type Action = {
 };
 
 const KNOWN_NAMES = ["temperature", "pressure", "insolation"];
+const dateTo = new Date();
 const INITIAL_DATES = {
-  from: new Date("2021-03-23T12:00:00.000Z"),
-  to: new Date("2021-03-23T12:30:00.000Z"),
+  from: DateTime.fromJSDate(dateTo).minus({ days: 3 }).toJSDate(),
+  to: dateTo,
 };
 const INITIAL_BIN_SIZE = 60;
 
