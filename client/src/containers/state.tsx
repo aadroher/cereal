@@ -9,7 +9,7 @@ export type DataPoint = {
   };
 };
 
-type Filters = {
+export type Filters = {
   dates: {
     from: Date;
     to: Date;

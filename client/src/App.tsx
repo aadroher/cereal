@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import DataViewer, { DataPoint } from "./components/data-viewer";
+import DataViewer from "./components/data-viewer";
+import { DataPoint } from "./containers/state";
 
 type GetDataNames = (data: DataPoint[]) => string[];
 const getDataNames: GetDataNames = (data) =>
