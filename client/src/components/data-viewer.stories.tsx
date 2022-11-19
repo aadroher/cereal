@@ -3,7 +3,8 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 
-import DataViewer, { DataPoint } from "./data-viewer";
+import DataViewer from "./data-viewer";
+import { DataPoint } from "../containers/state";
 
 faker.seed(1984);
 
