@@ -1,5 +1,5 @@
 import { fetchData } from "../data-fetcher";
-import { State, Action, ActionType, Filters } from "../state";
+import { State, ActionType, Filters } from "../state";
 
 type EventHandler = (args: {
   state: State;

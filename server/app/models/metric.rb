@@ -22,7 +22,7 @@ class Metric < ApplicationRecord
   def self.flat_hashes(result)
     result.map do |instance|
       {
-        timestamp: instance[:bin],
+        timestamp: DateTime.parse(instance[:bin]),
         name: instance[:name],
         value: instance[:avg]
       }

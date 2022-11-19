@@ -1,0 +1,15 @@
+.data-viewer {
+  & > * + * {
+    margin-top: 2rem;
+  }
+
+  &__bottom-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    & > * + * {
+      margin-left: 2rem;
+    }
+  }
+}

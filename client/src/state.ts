@@ -89,7 +89,10 @@ export const rootReducer: RootReducer = (state, action) => {
         ...state,
         filters: {
           ...state.filters,
-          from: action.payload,
+          dates: {
+            ...state.filters.dates,
+            from: action.payload as Date,
+          },
         },
       };
     }
@@ -98,7 +101,10 @@ export const rootReducer: RootReducer = (state, action) => {
         ...state,
         filters: {
           ...state.filters,
-          to: action.payload,
+          dates: {
+            ...state.filters.dates,
+            to: action.payload as Date,
+          },
         },
       };
     }

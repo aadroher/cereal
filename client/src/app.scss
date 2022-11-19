@@ -1,0 +1,29 @@
+.app {
+  margin: auto;
+  box-sizing: border-box;
+  // max-width: calc(1080px + 2 * 4rem);
+  padding: 4rem;
+
+  & > * + * {
+    margin-top: 2rem;
+  }
+}
+
+.app-header {
+  &__title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.app-link {
+  color: #61dafb;
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

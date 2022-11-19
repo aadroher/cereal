@@ -1,0 +1,14 @@
+.date-selector {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > * + * {
+    margin-left: 0.5rem;
+  }
+
+  &__field {
+    .date-selector__date-input {
+      margin-left: 0.5rem;
+    }
+  }
+}
