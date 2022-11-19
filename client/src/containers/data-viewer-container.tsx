@@ -7,6 +7,7 @@ import {
   handleOnSelectedNamesChange,
   handleOnDateFromChange,
   handleOnDateToChange,
+  handleBinSizeChange,
 } from "../event-handlers";
 
 const DataViewerContainer = (): JSX.Element => {
@@ -20,6 +21,7 @@ const DataViewerContainer = (): JSX.Element => {
     <DataViewer
       data={state.data}
       filters={state.filters}
+      binSize={state.binSize}
       onSelectedNamesChange={(newNames) => {
         handleOnSelectedNamesChange({
           state,
@@ -39,6 +41,14 @@ const DataViewerContainer = (): JSX.Element => {
           state,
           dispatch,
           payload: newDate,
+        });
+      }}
+      onBinSizeChange={(newBinSize) => {
+        console.log({ newBinSize });
+        handleBinSizeChange({
+          state,
+          dispatch,
+          payload: newBinSize,
         });
       }}
     />

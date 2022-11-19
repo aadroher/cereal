@@ -50,6 +50,7 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
   return (
     <DataViewer
       data={data}
+      binSize={60}
       filters={{
         names: selectedLabels,
         dates: {
@@ -63,6 +64,9 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
       }}
       onDateToChange={() => {
         console.log("onDateToChange");
+      }}
+      onBinSizeChange={() => {
+        console.log("onBinSizeChange");
       }}
     />
   );
