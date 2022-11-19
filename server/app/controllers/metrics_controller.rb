@@ -1,19 +1,15 @@
 class MetricsController < ApplicationController
-  def index
-    metrics = [
-      {
-        timestamp: DateTime.now,
-        name: 'temp',
-        value: 23
-      }
-    ]
+  before_action :check_search_params, only: :averages
 
-    render json: metrics
+  def create
+    metric = Metric.new metric_params
+
+    metric.save!
+
+    render json: metric
   end
 
   def averages
-    clean_params = params
-    ap clean_params[:from]
     averages = Metric.averages(
       from: params[:from],
       to: params[:to],
@@ -23,5 +19,13 @@ class MetricsController < ApplicationController
     render json: averages
   end
 
-  def create; end
+  private
+
+  def metric_params
+    params.require(:metric).permit(:timestamp, :name, :value)
+  end
+
+  def check_search_params
+    params.require(%i[from to names bin_size])
+  end
 end
