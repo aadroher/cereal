@@ -28,7 +28,25 @@ type Action = {
   payload: unknown;
 };
 
-type RootReducer = (state: State, action: Action) => State;
-const rootReducer = (state, action) => {};
+export const initialState: State = {
+  loading: false,
+  filters: {
+    dates: {
+      from: new Date(),
+      to: new Date(),
+    },
+    names: [],
+  },
+  data: [],
+};
 
-export default rootReducer;
+type RootReducer = (state: State, action: Action) => State;
+export const rootReducer: RootReducer = (state, action) => {
+  console.log({ state });
+  console.log({ action });
+
+  const newState = state;
+
+  console.log({ newState });
+  return newState;
+};
