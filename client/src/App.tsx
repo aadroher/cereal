@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import DataViewer, { DataPoint } from "./components/data-viewer";
 
+type GetDataNames = (data: DataPoint[]) => string[];
+const getDataNames: GetDataNames = (data) =>
+  data.length > 0 ? Object.keys(data[0].values) : [];
+
 function App() {
   const [data, setData] = useState([] as DataPoint[]);
+  const [selectedLabels, setSelectedLabels] = useState(getDataNames(data));
   useEffect(() => {
     const fetchFromApi = async () => {
       const response = await fetch(
@@ -25,7 +30,11 @@ function App() {
       <header className="App-header">
         <h1>Cereal</h1>
       </header>
-      <DataViewer data={data} />
+      <DataViewer
+        data={data}
+        selectedLabels={selectedLabels}
+        onSelectedLabelsChange={setSelectedLabels}
+      />
     </div>
   );
 }
