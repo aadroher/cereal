@@ -8,6 +8,7 @@ import {
   YAxis,
   Legend,
   Tooltip,
+  CustomizedProps,
 } from "recharts";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
@@ -41,10 +42,10 @@ const getDataforChart: GetDataForChart = (data) => {
 
   return data.map(({ timestamp, values }) => {
     const formattedTimestamp =
-      DateTime.fromJSDate(timestamp).toFormat("MM-dd HH:mm");
+      DateTime.fromJSDate(timestamp).toFormat("dd/MM HH:mm");
     const roundedValues = getRoundedValues(values as { [key: string]: number });
     return {
-      name: formattedTimestamp,
+      timestamp: timestamp.valueOf(),
       ...roundedValues,
     };
   });
@@ -59,6 +60,30 @@ type GetDataNames = (data: DataPoint[]) => string[];
 const getDataNames: GetDataNames = (data) =>
   data.length > 0 ? Object.keys(data[0].values) : [];
 
+type CustomTickProps = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  payload?: {
+    value: number;
+  };
+};
+const CustomTickValue = ({
+  x,
+  y,
+  width,
+  height,
+  payload,
+}: CustomTickProps): JSX.Element | null =>
+  [x, y, width, height, payload?.value].some(
+    (prop) => prop === undefined
+  ) ? null : (
+    <text x={x} y={(y as number) + 10} textAnchor="middle" fill="#666">
+      {DateTime.fromMillis(payload?.value as number).toFormat("dd/MM HH:mm")}
+    </text>
+  );
+
 const Chart = ({ data, filters }: ChartProps): JSX.Element => {
   const dataNames = getDataNames(data);
   const dataForGraph = getDataforChart(data);
@@ -70,14 +95,19 @@ const Chart = ({ data, filters }: ChartProps): JSX.Element => {
         {filters.names.map((name, i) => (
           <Line
             key={name}
-            type="monotone"
+            type="linear"
             dot={false}
             dataKey={name}
             isAnimationActive={false}
             stroke={colourPool[dataNames.indexOf(name)]}
           />
         ))}
-        <XAxis dataKey="name" />
+        <XAxis
+          type="number"
+          dataKey="timestamp"
+          tick={<CustomTickValue />}
+          domain={[filters.dates.from.valueOf(), filters.dates.to.valueOf()]}
+        />
         <YAxis />
         <Tooltip />
         <Legend />
