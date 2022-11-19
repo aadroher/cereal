@@ -18,6 +18,18 @@ faker.seed(6);
 
 const colourPool = [...Array(100).keys()].map(() => faker.color.rgb());
 
+type GetRoundedValues = (values: { [key: string]: number }) => {
+  [key: string]: number;
+};
+const getRoundedValues: GetRoundedValues = (values) =>
+  Object.entries(values).reduce(
+    (formatted, [key, value]) => ({
+      ...formatted,
+      [key]: value.toFixed(2),
+    }),
+    {}
+  );
+
 type ChartDataPoint = {
   [key: string]: string | number;
 };
@@ -28,12 +40,12 @@ const getDataforChart: GetDataForChart = (data) => {
   );
 
   return data.map(({ timestamp, values }) => {
-    console.log(timestamp.toISOString());
     const formattedTimestamp =
       DateTime.fromJSDate(timestamp).toFormat("MM-dd HH:mm");
+    const roundedValues = getRoundedValues(values as { [key: string]: number });
     return {
       name: formattedTimestamp,
-      ...values,
+      ...roundedValues,
     };
   });
 };
