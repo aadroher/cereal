@@ -1,0 +1,24 @@
+.app {
+  padding: 4rem;
+}
+
+.app-header {
+  /* font-size: calc(10px + 2vmin); */
+
+  &__title {
+    margin-bottom: 1em;
+  }
+}
+
+.app-link {
+  color: #61dafb;
+}
+
+@keyframes app-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
