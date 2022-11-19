@@ -5,3 +5,24 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+
+Faker::Config.random = Random.new(1984)
+
+NUM_RECORDS_PER_NAME = 1000
+NAMES = %w[temperature pressure insolation].freeze
+INITIAL_DATETIME = DateTime.new(2021, 3, 23, 12, 0, 0, '+00:00')
+
+ap INITIAL_DATETIME
+
+NAMES.each do |name|
+  metrics_data = (0..NUM_RECORDS_PER_NAME).map do |i|
+    step_in_seconds = 60 * 2
+    time_noise_seconds = Faker::Number.within range: (0..5)
+    {
+      timestamp: INITIAL_DATETIME + (i * step_in_seconds + time_noise_seconds).seconds,
+      name: name,
+      value: Faker::Number.between(from: 0.0, to: 100.0)
+    }
+  end
+  Metric.create! metrics_data
+end
