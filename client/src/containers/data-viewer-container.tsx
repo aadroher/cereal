@@ -4,7 +4,9 @@ import { initialState, rootReducer } from "../state";
 import DataViewer from "../components/data-viewer";
 import {
   handleFirstLoad,
-  handleOnSelectedLabelsChange,
+  handleOnSelectedNamesChange,
+  handleOnDateFromChange,
+  handleOnDateToChange,
 } from "../event-handlers";
 
 const DataViewerContainer = (): JSX.Element => {
@@ -18,11 +20,25 @@ const DataViewerContainer = (): JSX.Element => {
     <DataViewer
       data={state.data}
       filters={state.filters}
-      onSelectedLabelsChange={(newNames) => {
-        handleOnSelectedLabelsChange({
+      onSelectedNamesChange={(newNames) => {
+        handleOnSelectedNamesChange({
           state,
           dispatch,
           payload: newNames,
+        });
+      }}
+      onDateFromChange={(newDate) => {
+        handleOnDateFromChange({
+          state,
+          dispatch,
+          payload: newDate,
+        });
+      }}
+      onDateToChange={(newDate) => {
+        handleOnDateToChange({
+          state,
+          dispatch,
+          payload: newDate,
         });
       }}
     />

@@ -57,7 +57,13 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
           to: data[numSamples - 1].timestamp,
         },
       }}
-      onSelectedLabelsChange={setSelectedLabels}
+      onSelectedNamesChange={setSelectedLabels}
+      onDateFromChange={() => {
+        console.log("onDateFromChange");
+      }}
+      onDateToChange={() => {
+        console.log("onDateToChange");
+      }}
     />
   );
 };

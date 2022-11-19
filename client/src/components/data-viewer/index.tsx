@@ -21,7 +21,9 @@ const colourPool = [...Array(100).keys()].map(() => faker.color.rgb());
 type DataViewerProps = {
   data: DataPoint[];
   filters: Filters;
-  onSelectedLabelsChange: (newSelectedLabels: string[]) => void;
+  onSelectedNamesChange: (newSelectedLabels: string[]) => void;
+  onDateFromChange: (newFromDate: Date) => void;
+  onDateToChange: (newToDate: Date) => void;
 };
 
 type GetDataNames = (data: DataPoint[]) => string[];
@@ -35,7 +37,9 @@ const formatDateForHtml: FormatDateForHtml = (date) =>
 const DataViewer = ({
   data,
   filters,
-  onSelectedLabelsChange,
+  onSelectedNamesChange,
+  onDateFromChange,
+  onDateToChange,
 }: DataViewerProps): JSX.Element => {
   data.sort(
     ({ timestamp: ts0 }, { timestamp: ts1 }) => ts0.getTime() - ts1.getTime()
@@ -59,7 +63,7 @@ const DataViewer = ({
                   (selectedName) => selectedName !== dataName
                 );
             newSelectedLabels.sort();
-            onSelectedLabelsChange(newSelectedLabels);
+            onSelectedNamesChange(newSelectedLabels);
           };
           return (
             <div key={dataName}>
@@ -96,6 +100,9 @@ const DataViewer = ({
           type="datetime-local"
           name="from"
           value={formatDateForHtml(filters.dates.from)}
+          onChange={(event) => {
+            onDateFromChange(new Date(event.target.value));
+          }}
         />
         <label htmlFor="to">To:</label>
         <input
@@ -104,6 +111,9 @@ const DataViewer = ({
           name="to"
           value={formatDateForHtml(filters.dates.to)}
           min={formatDateForHtml(filters.dates.from)}
+          onChange={(event) => {
+            onDateToChange(new Date(event.target.value));
+          }}
         />
       </div>
     </div>

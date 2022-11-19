@@ -2,6 +2,8 @@ export enum ActionType {
   FETCH_DATA = "FETCH_DATA",
   RECEIVE_DATA = "RECEIVE_DATA",
   UPDATE_SELECTED_NAMES = "UPDATE_SELECTED_NAMES",
+  UPDATE_FROM_DATE = "UPDATE_FROM_DATE",
+  UPDATE_TO_DATE = "UPDATE_TO_DATE",
 }
 
 export type DataPoint = {
@@ -81,7 +83,24 @@ export const rootReducer: RootReducer = (state, action) => {
         },
       };
     }
-
+    case ActionType.UPDATE_FROM_DATE: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          from: action.payload,
+        },
+      };
+    }
+    case ActionType.UPDATE_TO_DATE: {
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          to: action.payload,
+        },
+      };
+    }
     default:
       return state;
   }
