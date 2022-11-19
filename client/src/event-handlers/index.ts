@@ -89,3 +89,26 @@ export const handleOnDateToChange: EventHandler = async ({
     payload: responseBody,
   });
 };
+
+export const handleBinSizeChange: EventHandler = async ({
+  state,
+  dispatch,
+  payload: newBinSize,
+}) => {
+  dispatch({
+    type: ActionType.UPDATE_BIN_SIZE,
+    payload: newBinSize,
+  });
+
+  dispatch({ type: ActionType.FETCH_DATA });
+
+  const responseBody = await fetchData({
+    binSize: newBinSize as number,
+    filters: state.filters,
+  });
+
+  dispatch({
+    type: ActionType.RECEIVE_DATA,
+    payload: responseBody,
+  });
+};

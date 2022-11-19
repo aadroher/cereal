@@ -18,12 +18,16 @@ faker.seed(6);
 
 const colourPool = [...Array(100).keys()].map(() => faker.color.rgb());
 
+const BIN_SIZES = [60, 60 * 60, 60 * 60 * 24];
+
 type DataViewerProps = {
   data: DataPoint[];
+  binSize: number;
   filters: Filters;
   onSelectedNamesChange: (newSelectedLabels: string[]) => void;
   onDateFromChange: (newFromDate: Date) => void;
   onDateToChange: (newToDate: Date) => void;
+  onBinSizeChange: (newBinsize: number) => void;
 };
 
 type GetDataNames = (data: DataPoint[]) => string[];
@@ -34,12 +38,31 @@ type FormatDateForHtml = (date: Date) => string;
 const formatDateForHtml: FormatDateForHtml = (date) =>
   DateTime.fromJSDate(date).toFormat("yyyy-MM-dd'T'HH:mm");
 
+const binSizeToHumanString = (binSize: number) => {
+  switch (binSize) {
+    case BIN_SIZES[0]: {
+      return "1 minute";
+    }
+    case BIN_SIZES[1]: {
+      return "1 hour";
+    }
+    case BIN_SIZES[2]: {
+      return "1 day";
+    }
+    default: {
+      return `${binSize} seconds`;
+    }
+  }
+};
+
 const DataViewer = ({
   data,
   filters,
+  binSize,
   onSelectedNamesChange,
   onDateFromChange,
   onDateToChange,
+  onBinSizeChange,
 }: DataViewerProps): JSX.Element => {
   data.sort(
     ({ timestamp: ts0 }, { timestamp: ts1 }) => ts0.getTime() - ts1.getTime()
@@ -116,6 +139,25 @@ const DataViewer = ({
           }}
         />
       </div>
+      <fieldset>
+        {BIN_SIZES.map((binSizeOption) => (
+          <div key={binSizeOption}>
+            <input
+              id={binSizeOption.toString()}
+              name="bin-size"
+              type="radio"
+              value={binSizeOption.toString()}
+              checked={binSizeOption === binSize}
+              onChange={() => {
+                onBinSizeChange(binSizeOption);
+              }}
+            />
+            <label htmlFor={binSizeOption.toString()}>
+              {binSizeToHumanString(binSizeOption)}
+            </label>
+          </div>
+        ))}
+      </fieldset>
     </div>
   );
 };

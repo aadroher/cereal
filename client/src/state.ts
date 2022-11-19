@@ -4,6 +4,7 @@ export enum ActionType {
   UPDATE_SELECTED_NAMES = "UPDATE_SELECTED_NAMES",
   UPDATE_FROM_DATE = "UPDATE_FROM_DATE",
   UPDATE_TO_DATE = "UPDATE_TO_DATE",
+  UPDATE_BIN_SIZE = "UPDATE_BIN_SIZE",
 }
 
 export type DataPoint = {
@@ -99,6 +100,12 @@ export const rootReducer: RootReducer = (state, action) => {
           ...state.filters,
           to: action.payload,
         },
+      };
+    }
+    case ActionType.UPDATE_BIN_SIZE: {
+      return {
+        ...state,
+        binSize: action.payload as number,
       };
     }
     default:
