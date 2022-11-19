@@ -40,8 +40,6 @@ const DataViewer = ({ data }: DataViewerProps): JSX.Element => {
     name: timestamp.toISOString(),
     ...values,
   }));
-  console.log({ selectedLabels });
-  console.log(dataForGraph);
 
   return (
     <div>
