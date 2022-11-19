@@ -44,12 +44,14 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'guard'
+  gem 'guard-minitest'
 end
 
 gem 'sqlite3', '~> 1.5'
 
 gem 'rubocop', '~> 1.39'
 
-gem "faker", "~> 3.0"
+gem 'faker', '~> 3.0'
 
-gem "awesome_print", "~> 1.9"
+gem 'awesome_print', '~> 1.9'

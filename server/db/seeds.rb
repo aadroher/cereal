@@ -16,10 +16,11 @@ NAMES.each do |name|
   metrics_data = (0...NUM_RECORDS_PER_NAME).map do |i|
     step_in_seconds = 60 * 2
     time_noise_seconds = Faker::Number.within range: (0..5)
+    timestamp = INITIAL_DATETIME - (i * step_in_seconds + time_noise_seconds).seconds
     {
-      timestamp: INITIAL_DATETIME - (i * step_in_seconds + time_noise_seconds).seconds,
+      timestamp: timestamp,
       name: name,
-      value: Faker::Number.between(from: 0.0, to: 100.0)
+      value: Faker::Number.between(from: -50.0, to: 50.0)
     }
   end
   Metric.create! metrics_data
