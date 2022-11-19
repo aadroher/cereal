@@ -41,7 +41,7 @@ const getDataforChart: GetDataForChart = (data) => {
 
   return data.map(({ timestamp, values }) => {
     const formattedTimestamp =
-      DateTime.fromJSDate(timestamp).toFormat("MM-dd HH:mm");
+      DateTime.fromJSDate(timestamp).toFormat("dd/MM HH:mm");
     const roundedValues = getRoundedValues(values as { [key: string]: number });
     return {
       name: formattedTimestamp,
