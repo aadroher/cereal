@@ -1,12 +1,13 @@
 .app {
   padding: 4rem;
+  & > * + * {
+    margin-top: 2rem;
+  }
 }
 
 .app-header {
-  /* font-size: calc(10px + 2vmin); */
-
   &__title {
-    margin-bottom: 1em;
+    margin-bottom: 0.5rem;
   }
 }
 

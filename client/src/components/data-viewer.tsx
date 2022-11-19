@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./data-viewer.scss";
+
 import Chart from "./chart";
 import NameSelector from "./name-selector";
 import DateSelector from "./date-selector";
@@ -25,15 +27,15 @@ const DataViewer = ({
   onDateFromChange,
   onDateToChange,
   onBinSizeChange,
-}: DataViewerProps): JSX.Element => {
-  return (
-    <div>
-      <NameSelector
-        data={data}
-        filters={filters}
-        onChange={onSelectedNamesChange}
-      />
-      <Chart data={data} filters={filters} />
+}: DataViewerProps): JSX.Element => (
+  <div className="data-viewer">
+    <NameSelector
+      data={data}
+      filters={filters}
+      onChange={onSelectedNamesChange}
+    />
+    <Chart data={data} filters={filters} />
+    <div className="data-viewer__bottom-controls">
       <DateSelector
         filters={filters}
         onDateFromChange={onDateFromChange}
@@ -41,7 +43,7 @@ const DataViewer = ({
       />
       <BinSizeSelector binSize={binSize} onBinSizeChange={onBinSizeChange} />
     </div>
-  );
-};
+  </div>
+);
 
 export default DataViewer;

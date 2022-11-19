@@ -1,6 +1,8 @@
 import React from "react";
 import { DateTime } from "luxon";
 
+import "./date-selector.scss";
+
 import { Filters } from "../state";
 
 type FormatDateForHtml = (date: Date) => string;
@@ -18,28 +20,35 @@ const DateSelector = ({
   onDateFromChange,
   onDateToChange,
 }: DateSelectorProps): JSX.Element => (
-  <div>
-    <label htmlFor="from">From:</label>
-    <input
-      id="from"
-      type="datetime-local"
-      name="from"
-      value={formatDateForHtml(filters.dates.from)}
-      onChange={(event) => {
-        onDateFromChange(new Date(event.target.value));
-      }}
-    />
-    <label htmlFor="to">To:</label>
-    <input
-      id="to"
-      type="datetime-local"
-      name="to"
-      value={formatDateForHtml(filters.dates.to)}
-      min={formatDateForHtml(filters.dates.from)}
-      onChange={(event) => {
-        onDateToChange(new Date(event.target.value));
-      }}
-    />
+  <div className="date-selector">
+    <div className="date-selector__field">
+      <input
+        className="date-selector__date-input"
+        id="from"
+        type="datetime-local"
+        name="from"
+        value={formatDateForHtml(filters.dates.from)}
+        onChange={(event) => {
+          onDateFromChange(new Date(event.target.value));
+        }}
+      />
+    </div>
+    <div className="date-selector__field">
+      <label className="date-selector__label" htmlFor="to">
+        to
+      </label>
+      <input
+        className="date-selector__date-input"
+        id="to"
+        type="datetime-local"
+        name="to"
+        value={formatDateForHtml(filters.dates.to)}
+        min={formatDateForHtml(filters.dates.from)}
+        onChange={(event) => {
+          onDateToChange(new Date(event.target.value));
+        }}
+      />
+    </div>
   </div>
 );
 

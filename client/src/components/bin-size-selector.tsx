@@ -1,11 +1,13 @@
 import React from "react";
 
+import "./bin-size-selector.scss";
+
 const BIN_SIZES = [60, 60 * 60, 60 * 60 * 24];
 
 const binSizeToHumanString = (binSize: number) => {
   switch (binSize) {
     case BIN_SIZES[0]: {
-      return "1 minute";
+      return "1 min";
     }
     case BIN_SIZES[1]: {
       return "1 hour";
@@ -28,7 +30,8 @@ const BinSizeSelector = ({
   binSize,
   onBinSizeChange,
 }: BinSizeSelectorProps) => (
-  <fieldset>
+  <div className="bin-size-selector">
+    <div>interval:</div>
     {BIN_SIZES.map((binSizeOption) => (
       <div key={binSizeOption}>
         <input
@@ -46,7 +49,7 @@ const BinSizeSelector = ({
         </label>
       </div>
     ))}
-  </fieldset>
+  </div>
 );
 
 export default BinSizeSelector;

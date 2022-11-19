@@ -1,4 +1,6 @@
 import React from "react";
+import "./name-selector.scss";
+
 import { DataPoint, Filters } from "../state";
 
 type GetDataNames = (data: DataPoint[]) => string[];
@@ -33,7 +35,7 @@ const NameSelector = ({
   const dataNames = getDataNames(data);
 
   return (
-    <div>
+    <div className="name-selector">
       {dataNames.map((dataName) => {
         const isActive = filters.names.includes(dataName);
         return (

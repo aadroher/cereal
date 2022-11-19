@@ -6,7 +6,9 @@ const App = () => (
   <div className="app">
     <header className="app-header">
       <h1 className="app-header__title">Cereal</h1>
-      <div role="doc-subtitle">A serial data viewer</div>
+      <div className="app-header__subtitle" role="doc-subtitle">
+        A serial data viewer
+      </div>
     </header>
     <DataViewerContainer />
   </div>
