@@ -10,16 +10,12 @@ import {
 } from "recharts";
 
 import { faker } from "@faker-js/faker";
+
+import { DataPoint } from "../../containers/state";
+
 faker.seed(6);
 
 const colourPool = [...Array(100).keys()].map(() => faker.color.rgb());
-
-export type DataPoint = {
-  timestamp: Date;
-  values: {
-    [name: string]: number | null;
-  };
-};
 
 type DataViewerProps = {
   data: DataPoint[];
