@@ -1,10 +1,12 @@
 import React, { useReducer, useEffect } from "react";
 
-import { initialState, rootReducer } from "./state";
+import { initialState, rootReducer } from "../state";
 import DataViewer from "../components/data-viewer";
 import {
   handleFirstLoad,
-  handleOnSelectedLabelsChange,
+  handleOnSelectedNamesChange,
+  handleOnDateFromChange,
+  handleOnDateToChange,
 } from "../event-handlers";
 
 const DataViewerContainer = (): JSX.Element => {
@@ -17,12 +19,26 @@ const DataViewerContainer = (): JSX.Element => {
   return (
     <DataViewer
       data={state.data}
-      selectedLabels={state.filters.names}
-      onSelectedLabelsChange={(newNames) => {
-        handleOnSelectedLabelsChange({
+      filters={state.filters}
+      onSelectedNamesChange={(newNames) => {
+        handleOnSelectedNamesChange({
           state,
           dispatch,
           payload: newNames,
+        });
+      }}
+      onDateFromChange={(newDate) => {
+        handleOnDateFromChange({
+          state,
+          dispatch,
+          payload: newDate,
+        });
+      }}
+      onDateToChange={(newDate) => {
+        handleOnDateToChange({
+          state,
+          dispatch,
+          payload: newDate,
         });
       }}
     />

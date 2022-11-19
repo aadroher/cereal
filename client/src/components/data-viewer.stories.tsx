@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { faker } from "@faker-js/faker";
 
 import DataViewer from "./data-viewer";
-import { DataPoint } from "../containers/state";
+import { DataPoint } from "../state";
 
 faker.seed(1984);
 
@@ -40,7 +40,6 @@ export default {
   title: "Components/DataViewer",
   component: DataViewer,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
 } as ComponentMeta<typeof DataViewer>;
@@ -51,8 +50,20 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
   return (
     <DataViewer
       data={data}
-      selectedLabels={selectedLabels}
-      onSelectedLabelsChange={setSelectedLabels}
+      filters={{
+        names: selectedLabels,
+        dates: {
+          from: data[0].timestamp,
+          to: data[numSamples - 1].timestamp,
+        },
+      }}
+      onSelectedNamesChange={setSelectedLabels}
+      onDateFromChange={() => {
+        console.log("onDateFromChange");
+      }}
+      onDateToChange={() => {
+        console.log("onDateToChange");
+      }}
     />
   );
 };
