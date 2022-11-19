@@ -1,5 +1,5 @@
 import React from "react";
-import "./app.css";
+import "./main.css";
 import DataViewerContainer from "./containers/data-viewer-container";
 
 const App = () => (
