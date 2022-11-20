@@ -20,10 +20,19 @@ const getUrlQueryParams: GetUrlQueryParams = ({ binSize, filters }) =>
     { arrayFormat: "bracket" }
   );
 
+type FetchResult = {
+  ok: boolean;
+  errorResponse: {
+    status: number;
+    error: string;
+  } | null;
+  data: DataPoint[] | null;
+};
+
 type FetchData = (params: {
   binSize: number;
   filters: Filters;
-}) => Promise<DataPoint[]>;
+}) => Promise<FetchResult>;
 export const fetchData: FetchData = async ({ binSize, filters }) => {
   const urlParamsStr = getUrlQueryParams({
     binSize,
@@ -32,6 +41,22 @@ export const fetchData: FetchData = async ({ binSize, filters }) => {
   const localPath = `${API_ROOT}${METRICS_AVERAGES_PATH}?${urlParamsStr}`;
 
   const response = await fetch(localPath);
-  const responseBody: DataPoint[] = await response.json();
-  return responseBody;
+
+  if (response.ok) {
+    const parsedResponseBody: DataPoint[] = await response.json();
+    return {
+      ok: true,
+      errorResponse: null,
+      data: parsedResponseBody,
+    };
+  } else {
+    return {
+      ok: false,
+      errorResponse: {
+        status: response.status,
+        error: response.statusText,
+      },
+      data: null,
+    };
+  }
 };

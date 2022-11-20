@@ -4,6 +4,7 @@ const KNOWN_NAMES = ["temperature", "pressure", "insolation"];
 
 export enum ActionType {
   FETCH_DATA = "FETCH_DATA",
+  FETCH_ERROR = "FETCH_ERROR",
   RECEIVE_DATA = "RECEIVE_DATA",
   UPDATE_SELECTED_NAMES = "UPDATE_SELECTED_NAMES",
   UPDATE_FROM_DATE = "UPDATE_FROM_DATE",
@@ -28,6 +29,10 @@ export type Filters = {
 
 export type State = {
   loading: boolean;
+  errorResponse: {
+    status: number;
+    error: string;
+  } | null;
   binSize: number;
   filters: Filters;
   data: DataPoint[];
@@ -47,6 +52,7 @@ const INITIAL_BIN_SIZE = 60 * 60;
 
 export const initialState: State = {
   loading: false,
+  errorResponse: null,
   binSize: INITIAL_BIN_SIZE,
   filters: {
     dates: initialDates,
@@ -74,7 +80,20 @@ export const rootReducer: RootReducer = (state, action) => {
       return {
         ...state,
         loading: false,
+        errorResponse: null,
         data: newData,
+      };
+    }
+    case ActionType.FETCH_ERROR: {
+      const errorResponse = action.payload as {
+        status: number;
+        error: string;
+      };
+
+      return {
+        ...state,
+        loading: false,
+        errorResponse,
       };
     }
     case ActionType.UPDATE_SELECTED_NAMES: {
