@@ -1,5 +1,7 @@
 import { DateTime } from "luxon";
 
+const KNOWN_NAMES = ["temperature", "pressure", "insolation"];
+
 export enum ActionType {
   FETCH_DATA = "FETCH_DATA",
   RECEIVE_DATA = "RECEIVE_DATA",
@@ -36,19 +38,18 @@ export type Action = {
   payload?: unknown;
 };
 
-const KNOWN_NAMES = ["temperature", "pressure", "insolation"];
 const dateTo = new Date();
-const INITIAL_DATES = {
+const initialDates = {
   from: DateTime.fromJSDate(dateTo).minus({ days: 3 }).toJSDate(),
   to: dateTo,
 };
-const INITIAL_BIN_SIZE = 60;
+const INITIAL_BIN_SIZE = 60 * 60;
 
 export const initialState: State = {
   loading: false,
   binSize: INITIAL_BIN_SIZE,
   filters: {
-    dates: INITIAL_DATES,
+    dates: initialDates,
     names: KNOWN_NAMES,
   },
   data: [],
@@ -56,9 +57,6 @@ export const initialState: State = {
 
 type RootReducer = (state: State, action: Action) => State;
 export const rootReducer: RootReducer = (state, action) => {
-  console.log({ state });
-  console.log({ action });
-
   switch (action.type) {
     case ActionType.FETCH_DATA: {
       return {
