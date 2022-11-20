@@ -73,6 +73,7 @@ export const rootReducer: RootReducer = (state, action) => {
       }));
       return {
         ...state,
+        loading: false,
         data: newData,
       };
     }

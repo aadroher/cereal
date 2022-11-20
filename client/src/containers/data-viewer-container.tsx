@@ -19,6 +19,7 @@ const DataViewerContainer = (): JSX.Element => {
 
   return (
     <DataViewer
+      isLoading={state.loading}
       data={state.data}
       filters={state.filters}
       binSize={state.binSize}
