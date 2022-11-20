@@ -1,4 +1,4 @@
-# Cereal
+# 🥣 Cereal
 
 A serial data viewer
 
