@@ -10,8 +10,12 @@ import BinSizeSelector from "./bin-size-selector";
 import { DataPoint, Filters } from "../state";
 
 type DataViewerProps = {
-  data: DataPoint[];
   isLoading: boolean;
+  errorResponse: {
+    status: number;
+    error: string;
+  } | null;
+  data: DataPoint[];
   binSize: number;
   filters: Filters;
   onSelectedNamesChange: (newSelectedLabels: string[]) => void;
@@ -21,10 +25,11 @@ type DataViewerProps = {
 };
 
 const DataViewer = ({
+  isLoading,
+  errorResponse,
   data,
   filters,
   binSize,
-  isLoading,
   onSelectedNamesChange,
   onDateFromChange,
   onDateToChange,
@@ -48,6 +53,11 @@ const DataViewer = ({
     {isLoading && (
       <div>
         <p>Loading ...</p>
+      </div>
+    )}
+    {errorResponse && (
+      <div>
+        <p>{`Error ${errorResponse.status}: ${errorResponse.error}`}</p>
       </div>
     )}
   </div>

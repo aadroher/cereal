@@ -8,7 +8,7 @@
 
 Faker::Config.random = Random.new(1984)
 
-NUM_RECORDS_PER_NAME = 10_000
+NUM_RECORDS_PER_NAME = 5_000
 NAMES = %w[temperature pressure insolation].freeze
 INITIAL_DATETIME = DateTime.now
 
@@ -20,7 +20,7 @@ NAMES.each do |name|
     {
       timestamp: timestamp,
       name: name,
-      value: Faker::Number.between(from: -50.0, to: 50.0)
+      value: Faker::Number.between(from: 0, to: 100.0)
     }
   end
   Metric.create! metrics_data

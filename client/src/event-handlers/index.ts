@@ -1,21 +1,50 @@
 import { fetchData } from "../data-fetcher";
 import { State, ActionType, Filters } from "../state";
 
+type DispatchDataFetch = (args: {
+  state: State;
+  dispatch: Function;
+  params: {
+    binSize: number;
+    filters: Filters;
+  };
+}) => Promise<boolean>;
+const dispatchDataFetch: DispatchDataFetch = async ({
+  state,
+  dispatch,
+  params,
+}) => {
+  dispatch({ type: ActionType.FETCH_DATA });
+  const result = await fetchData(params);
+
+  if (result.ok) {
+    dispatch({
+      type: ActionType.RECEIVE_DATA,
+      payload: result.data,
+    });
+  } else {
+    dispatch({
+      type: ActionType.FETCH_ERROR,
+      payload: result.errorResponse,
+    });
+  }
+
+  return result.ok;
+};
+
 type EventHandler = (args: {
   state: State;
   dispatch: Function;
   payload?: unknown;
 }) => void | Promise<void>;
-
 export const handleFirstLoad: EventHandler = async ({ state, dispatch }) => {
-  dispatch({ type: ActionType.FETCH_DATA });
-  const responseBody = await fetchData({
-    binSize: state.binSize,
-    filters: state.filters,
-  });
-  dispatch({
-    type: ActionType.RECEIVE_DATA,
-    payload: responseBody,
+  await dispatchDataFetch({
+    state,
+    dispatch,
+    params: {
+      binSize: state.binSize,
+      filters: state.filters,
+    },
   });
 };
 
@@ -42,21 +71,21 @@ export const handleOnDateFromChange: EventHandler = async ({
     },
   } as Filters;
 
-  dispatch({ type: ActionType.FETCH_DATA });
-
-  const responseBody = await fetchData({
-    binSize: state.binSize,
-    filters: newFilters,
+  const fetchWasSuccessful = await dispatchDataFetch({
+    state,
+    dispatch,
+    params: {
+      binSize: state.binSize,
+      filters: newFilters,
+    },
   });
 
-  dispatch({
-    type: ActionType.UPDATE_FROM_DATE,
-    payload: newDate as Date,
-  });
-  dispatch({
-    type: ActionType.RECEIVE_DATA,
-    payload: responseBody,
-  });
+  if (fetchWasSuccessful) {
+    dispatch({
+      type: ActionType.UPDATE_FROM_DATE,
+      payload: newDate as Date,
+    });
+  }
 };
 
 export const handleOnDateToChange: EventHandler = async ({
@@ -72,22 +101,21 @@ export const handleOnDateToChange: EventHandler = async ({
     },
   } as Filters;
 
-  dispatch({
-    type: ActionType.UPDATE_TO_DATE,
-    payload: newDate as Date,
+  const fetchWasSuccessful = await dispatchDataFetch({
+    state,
+    dispatch,
+    params: {
+      binSize: state.binSize,
+      filters: newFilters,
+    },
   });
 
-  dispatch({ type: ActionType.FETCH_DATA });
-
-  const responseBody = await fetchData({
-    binSize: state.binSize,
-    filters: newFilters,
-  });
-
-  dispatch({
-    type: ActionType.RECEIVE_DATA,
-    payload: responseBody,
-  });
+  if (fetchWasSuccessful) {
+    dispatch({
+      type: ActionType.UPDATE_TO_DATE,
+      payload: newDate as Date,
+    });
+  }
 };
 
 export const handleBinSizeChange: EventHandler = async ({
@@ -95,20 +123,19 @@ export const handleBinSizeChange: EventHandler = async ({
   dispatch,
   payload: newBinSize,
 }) => {
-  dispatch({
-    type: ActionType.UPDATE_BIN_SIZE,
-    payload: newBinSize,
+  const fetchWasSuccessful = await dispatchDataFetch({
+    state,
+    dispatch,
+    params: {
+      binSize: newBinSize as number,
+      filters: state.filters,
+    },
   });
 
-  dispatch({ type: ActionType.FETCH_DATA });
-
-  const responseBody = await fetchData({
-    binSize: newBinSize as number,
-    filters: state.filters,
-  });
-
-  dispatch({
-    type: ActionType.RECEIVE_DATA,
-    payload: responseBody,
-  });
+  if (fetchWasSuccessful) {
+    dispatch({
+      type: ActionType.UPDATE_BIN_SIZE,
+      payload: newBinSize,
+    });
+  }
 };

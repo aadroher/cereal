@@ -50,6 +50,7 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
   return (
     <DataViewer
       isLoading={false}
+      errorResponse={null}
       data={data}
       binSize={60}
       filters={{
