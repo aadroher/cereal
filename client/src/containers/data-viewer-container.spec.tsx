@@ -25,6 +25,27 @@ jest.mock("recharts", () => {
 });
 
 describe("DataViewerContainer", () => {
+  describe("when there is an error loading the data", () => {
+    beforeEach(() => {
+      fetch.mockImplementation(async () => ({
+        ok: false,
+        status: 500,
+        statusText: "Internal Server Error",
+      }));
+    });
+
+    it("shows an error notification on screen", async () => {
+      await act(async () => {
+        render(<DataViewerContainer />);
+      });
+
+      const loadingNotification = await screen.findByText(
+        /error 500: internal server error/i
+      );
+      expect(loadingNotification).toBeInTheDocument();
+    });
+  });
+
   describe("when the server returns a well formed response", () => {
     beforeEach(() => {
       fetch.mockResponse(async (request) => ({
