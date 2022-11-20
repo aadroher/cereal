@@ -1,12 +1,6 @@
 import { fetchData } from "../data-fetcher";
 import { State, ActionType, Filters } from "../state";
 
-type EventHandler = (args: {
-  state: State;
-  dispatch: Function;
-  payload?: unknown;
-}) => void | Promise<void>;
-
 type DispatchDataFetch = (args: {
   state: State;
   dispatch: Function;
@@ -38,6 +32,11 @@ const dispatchDataFetch: DispatchDataFetch = async ({
   return result.ok;
 };
 
+type EventHandler = (args: {
+  state: State;
+  dispatch: Function;
+  payload?: unknown;
+}) => void | Promise<void>;
 export const handleFirstLoad: EventHandler = async ({ state, dispatch }) => {
   await dispatchDataFetch({
     state,

@@ -3,11 +3,9 @@
 
 import React from "react";
 import { act } from "react-dom/test-utils";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import ResizeObserverPolyfill from "resize-observer-polyfill";
 import "jest-fetch-mock";
-
-import { DateTime } from "luxon";
 
 import DataViewerContainer from "./data-viewer-container";
 
@@ -107,17 +105,56 @@ describe("DataViewerContainer", () => {
       });
     });
 
-    it("renders 2 day selectors with the correct defaults", async () => {
-      const currentDate = new Date();
-      const expectedToValue =
-        DateTime.fromJSDate(currentDate).toFormat("yyyy-MM-dd'T'HH:mm");
-      const expectedFromValue = DateTime.fromJSDate(currentDate)
-        .minus({ days: 3 })
-        .toFormat("yyyy-MM-dd'T'HH:mm");
+    it.todo("renders 2 day selectors with the correct defaults");
 
+    it("renders a set of 3 radio buttons with the 3 bin sizes and the second is selected", async () => {
       await act(async () => render(<DataViewerContainer />));
 
-      screen.debug();
+      const minRadioButton = await screen.findByRole("radio", {
+        name: /1 min/,
+      });
+      await waitFor(() => {
+        expect(minRadioButton).not.toBeChecked();
+      });
+
+      const hourRadioButton = await screen.findByRole("radio", {
+        name: /1 hour/,
+      });
+      await waitFor(() => {
+        expect(hourRadioButton).toBeChecked();
+      });
+
+      const dayRadioButton = await screen.findByRole("radio", {
+        name: /1 day/,
+      });
+      await waitFor(() => {
+        expect(dayRadioButton).not.toBeChecked();
+      });
+    });
+
+    describe("when a different bin size is selected", () => {
+      it("refetches data witnh the updated parameters", async () => {
+        await act(async () => render(<DataViewerContainer />));
+
+        await waitFor(() => {
+          expect(fetch).toHaveBeenCalledWith(
+            expect.stringMatching(/bin_size=3600/)
+          );
+        });
+
+        const minRadioButton = await screen.findByRole("radio", {
+          name: /1 min/,
+        });
+        await act(() => {
+          fireEvent.click(minRadioButton);
+        });
+
+        await waitFor(() => {
+          expect(fetch).toHaveBeenCalledWith(
+            expect.stringMatching(/bin_size=60/)
+          );
+        });
+      });
     });
   });
 });

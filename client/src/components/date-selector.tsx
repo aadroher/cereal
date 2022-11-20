@@ -27,6 +27,7 @@ const DateSelector = ({
         id="from"
         type="datetime-local"
         name="from"
+        aria-label="from datetime"
         value={formatDateForHtml(filters.dates.from)}
         onChange={(event) => {
           onDateFromChange(new Date(event.target.value));
@@ -42,6 +43,7 @@ const DateSelector = ({
         id="to"
         type="datetime-local"
         name="to"
+        aria-label="to datetime"
         value={formatDateForHtml(filters.dates.to)}
         min={formatDateForHtml(filters.dates.from)}
         onChange={(event) => {
