@@ -59,7 +59,7 @@ This will try to run the sever app on port 3000.
 
 ### Client
 
-The client code lives under the `./client` folder. It is an ejected instance of [create-react-app](https://create-react-app.dev/) with minor modifications. This is why it has such a huge number of dev dependencies. Some cleanup may be needed in order to leave only the ones needed.
+The client code lives under the `./client` folder. It uses React 17 and Typescript 4. It is an ejected instance of [create-react-app](https://create-react-app.dev/) with minor modifications. This is why it has such a huge number of dev dependencies. Some cleanup may be needed in order to leave only the ones needed.
 
 It has been developed and tested on Node 18.12.1. There is a `.nvmrc` file in it. Therefore, if you use [NVM](https://github.com/nvm-sh/nvm), you can set it with:
 
@@ -82,16 +82,51 @@ $ yarn start
 
 This will try to run the dev server on port 4000.
 
-As you can see in the `"proxy"` key in `package.json` all requests for all paths besides the root will be proxied back to the port 4000. This lets the web client connect to the server app running there. 
-
-
+As you can see in the `"proxy"` key in `package.json` all requests for all paths besides the root will be proxied back to the port 4000. This lets the web client connect to the server app running there.
 
 ## Tests
 
-## Technical approach
+Since this is the result of a first demo put together under time constraints, tests were _not_ written first and what we have right now is certainly lacking. They are both functional tests, so to speak, and describe part of the external behaviour of the system they test.
 
-## To Do
+### Server
 
-## Next steps
+For now, there are only tests for the single controller in the application. They can be run with
 
+```
+$ rails test
+```
 
+[Guard](https://github.com/guard/guard) and its [Minitest plugin](https://github.com/guard/guard-minitest) are installed in order to run the tests under watch mode. For this, run:
+
+```
+$ guard
+```
+### Client
+
+The client has, for now, only functional tests which check part of the behaviour of its main component. You can run them with:
+
+```
+$ yarn test
+```
+
+The CRA script called with that passes the `--watch` option to Jest automatically.
+
+## Technical description
+
+The current structure of the app is as follows:
+
+### Client
+
+- The main [`DataViewer`](./client/src/components/data-viewer.tsx)
+
+### Server
+
+### Storage
+
+## To Do and next steps
+
+### Client
+
+### Server
+
+### Storage
