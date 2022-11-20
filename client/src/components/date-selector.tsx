@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 
 import "./date-selector.scss";
 
-import { Filters } from "../state";
+import { Filters } from "../state-management/reducer";
 
 type FormatDateForHtml = (date: Date) => string;
 const formatDateForHtml: FormatDateForHtml = (date) =>

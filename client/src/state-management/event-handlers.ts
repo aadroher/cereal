@@ -1,5 +1,5 @@
 import { fetchData } from "../utils/data-fetcher";
-import { State, ActionType, Filters } from "../state";
+import { State, ActionType, Filters } from "./reducer";
 
 type DispatchDataFetch = (args: {
   state: State;
