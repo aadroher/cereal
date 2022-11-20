@@ -1,6 +1,8 @@
 class Metric < ApplicationRecord
-  def self.averages(from:, to:, names: [], bin_size: 60)
-    # TODO: bin_size needs sanitised
+  validates_presence_of :timestamp, :name, :value
+
+  def self.averages(from:, to:, names:, bin_size:)
+    # TODO: bin_size needs sanitised?
     result = select(
       "datetime((strftime('%s', timestamp)  / #{bin_size}) * #{bin_size}, 'unixepoch') as bin",
       'name',
