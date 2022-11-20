@@ -49,6 +49,7 @@ const Template: ComponentStory<typeof DataViewer> = (args) => {
   const [selectedLabels, setSelectedLabels] = useState(getDataNames(data));
   return (
     <DataViewer
+      isLoading={false}
       data={data}
       binSize={60}
       filters={{
