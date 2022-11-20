@@ -118,8 +118,9 @@ The current structure of the app is as follows:
 ### Client
 
 - The main [`DataViewer`](./client/src/components/data-viewer.tsx) mounts an instance of [`LineChart`](https://recharts.org/en-US/api/LineChart) from the Recharts library. It's this library which does the visualization itself by rendering SVG graphs.
-- [`DataViewer`](./client/src/components/data-viewer.tsx) is, so to speak, the main presentational component, where "presentational" means here that it's a component whose only concert is to render HTML as a function of the values of the received props.
-- 
+- [`DataViewer`](./client/src/components/data-viewer.tsx) is, so to speak, the main presentational component, where "presentational" means here that it's a component whose only concern is to render HTML as a function of the values of the received props.
+- A bit higher up we find [`DataViewerContainer`](./client/src/containers/data-viewer-container.tsx). As the name implies, this is a container for `DataViewer`, where "container" here means that it does not invole itself with rendering anything to the DOM but instead only _connects_ `DataViewer` with the state management infrastructure.
+- As you can see in [`DataViewerContainer`](./client/src/containers/data-viewer-container.tsx), it uses the [`useReducer`](https://en.reactjs.org/docs/hooks-reference.html#usereducer) React hook, which in turn is the React built-in implementation of the [Flux Architecture](https://facebook.github.io/flux/) (or [Elm Architecture](https://guide.elm-lang.org/architecture/) maybe?). This hook receives the `rootReducer` from [client/src/state-management/reducer.ts](./client/src/state-management/reducer.ts) which is where the state changes per each received action are defined. On the other hand, [`DataViewerContainer`](./client/src/containers/data-viewer-container.tsx) also uses several [event handlers](./client/src/state-management/event-handlers.ts) which are in charge of dispatching the correct actions to the reducer as a result of DOM events.
 
 ### Server
 
