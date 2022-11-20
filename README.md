@@ -111,19 +111,21 @@ $ yarn test
 
 The CRA script called with that passes the `--watch` option to Jest automatically.
 
-## Technical description
+## Technical notes
 
 The current structure of the app is as follows:
 
 ### Client
 
-- The main [`DataViewer`](./client/src/components/data-viewer.tsx)
+- The main [`DataViewer`](./client/src/components/data-viewer.tsx) mounts an instance of [`LineChart`](https://recharts.org/en-US/api/LineChart) from the Recharts library. It's this library which does the visualization itself by rendering SVG graphs.
+- [`DataViewer`](./client/src/components/data-viewer.tsx) is, so to speak, the main presentational component, where "presentational" means here that it's a component whose only concert is to render HTML as a function of the values of the received props.
+- 
 
 ### Server
 
 ### Storage
 
-## To Do and next steps
+## To Do and Next Steps
 
 ### Client
 

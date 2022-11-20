@@ -8,7 +8,6 @@ import {
   YAxis,
   Legend,
   Tooltip,
-  CustomizedProps,
 } from "recharts";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";

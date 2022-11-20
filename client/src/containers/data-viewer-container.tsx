@@ -8,7 +8,7 @@ import {
   handleOnDateFromChange,
   handleOnDateToChange,
   handleBinSizeChange,
-} from "../event-handlers";
+} from "../state-management";
 
 const DataViewerContainer = (): JSX.Element => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
