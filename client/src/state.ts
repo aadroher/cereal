@@ -43,7 +43,7 @@ const initialDates = {
   from: DateTime.fromJSDate(dateTo).minus({ days: 3 }).toJSDate(),
   to: dateTo,
 };
-const INITIAL_BIN_SIZE = 60;
+const INITIAL_BIN_SIZE = 60 * 60;
 
 export const initialState: State = {
   loading: false,

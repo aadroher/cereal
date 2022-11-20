@@ -159,6 +159,7 @@
     "@storybook/react": "^6.5.13",
     "@storybook/testing-library": "^0.0.13",
     "@types/luxon": "^3.1.0",
+    "jest-fetch-mock": "^3.0.3",
     "luxon": "^3.1.0"
   }
 }
