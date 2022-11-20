@@ -10,19 +10,19 @@ Cereal is an exercicie on building a system to both gather and graph time series
 
 ## Local development
 
-This repo includes the code for both the web server and the client. After some unsuccessful attempts at defining a proper `docker-compose` setup, for now, both the server and the server which serves the client need to be started independently.
+This repo includes the code for both the web server and the client. After some unsuccessful attempts at defining a proper `docker-compose` setup, for now both the application server and the server which serves the client need to be started independently.
 
 ### External dependencies
 
-In addition to the dependencies defined by the respective package managers, the following dependencies are assumed to be present.
+In addition to the code dependencies defined by the respective package managers, the following dependencies are assumed to be present.
 
-- The server depends on `sqlite3` being installed in the development machine. In case your on macOS you can use `brew` to install it:
+- The server depends on `sqlite3` being installed in the development machine. In case you are on macOS you can use `brew` to install it:
 
     ```
     $ brew install sqlite3
     ```
 - The client assumes that the browser in which will be run supports:
-   - The [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), that is, the presence of `fetch` in the global envirnoment.
+   - The [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), that is, the presence of `fetch` in the global namespace.
    - The [`datetime-local`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) HTML `input` type.
 
   Both are supported in modern web browsers, in particular on Chrome 107, which was used to develop and test this app.
@@ -63,7 +63,6 @@ The client code lives under the `./client` folder. It uses React 17 and Typescri
 
 It has been developed and tested on Node 18.12.1. There is a `.nvmrc` file in it. Therefore, if you use [NVM](https://github.com/nvm-sh/nvm), you can set it with:
 
-
 ```
 $ rvm use
 ```
@@ -86,7 +85,7 @@ As you can see in the `"proxy"` key in `package.json` all requests for all paths
 
 ## Tests
 
-Since this is the result of a first demo put together under time constraints, tests were _not_ written first and what we have right now is certainly lacking. They are both functional tests, so to speak, and describe part of the external behaviour of the system they test.
+Since this is the result of a first demo put together from scratch and under time constraints, tests were _not_ written first and what we have right now is certainly lacking. They are functional tests, so to speak, and describe part of the external behaviour of the system they test.
 
 ### Server
 
@@ -170,12 +169,27 @@ The current structure of the app is as follows:
 
 ### Storage
 
-- As you can see in [`Metric.averages`](./server/app/models/metric.rb#4)
+- As you can see in [`Metric.averages`](./server/app/models/metric.rb#L4) most of the calculation of the averages is done on the DB itself. The metric records are grouped by both the value of `name` and the lower bound of the intervals of `bin_size` length in seconds. This lower bound is calculated by making use of the integer division function of SQLite on the numerical representation of the timestamp in seconds. 
 
 ## To Do and Next Steps
 
+No doubt that the code in this repo is still a work in progress and a bit rought on the edges. There are some caveats and improvements that I can already spot at its current stage.
+
+These are notes on _some_ of them:
+
 ### Client
 
+- At the moment, the client assumes that it knows all the different values of the `name` field of the metric records. This is, of course, not realistic. Maybe a new endpoint on the backend should be added so that it serves all the current values for it?
+
 ### Server
+- I am not sure about the logic which lives under [`Metric.averages`](./server/app/models/metric.rb#L4) belonging there. It does generate summaries on the current state of `Metric` instances in the DB but the instances it returns do not match with the shape of a `Metric` model. Maybe one should use spomething like [ActiveRecord::Aggregations::ClassMethods](https://api.rubyonrails.org/classes/ActiveRecord/Aggregations/ClassMethods.html). My knowledge of the best practices of Rails on this matter are still lacking.
+
+- Related to the point above, it's not clear to me where should the guery params validation live. It's currently implemented on teh controller, but validation is normally defined on the model level in Rails. Or maybe this is the case only for record field validation before write operations on the DB?
+
+- For now, there is no cache system whatsoever, and this is a use case which would certaintly benefit from it.
 
 ### Storage
+
+- The current implementation uses SQLite, which is what comes by default with Rails and is very convenient for demo purposes. However, this store is by no means adequate for such an application on production as it has [some patent limitations for this use case](https://www.sqlite.org/whentouse.html). Besides more complex data streaming solutions (like [Kafka](https://kafka.apache.org/) and the like) a good first approach would be to chose some other relational database better fit for the job as the clients for them are already quite mature. Never worked with it but [Timescale DB](https://www.timescale.com/), a fork of Postgres, looks promising.
+- Related to the item above, the current implementation of `Metric.averages` relies a lot on SQLite-specific features. Maybe there is a way in Ruby to represent that SQL calculation without it taking place in the Ruby runtime? As an abstract query builder which is DB agnostic but still lets us represent this?  
+  
