@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 
-import { initialState, rootReducer } from "../state";
+import { initialState, rootReducer } from "../state-management/reducer";
 import DataViewer from "../components/data-viewer";
 import {
   handleFirstLoad,
@@ -8,7 +8,7 @@ import {
   handleOnDateFromChange,
   handleOnDateToChange,
   handleBinSizeChange,
-} from "../event-handlers";
+} from "../state-management/event-handlers";
 
 const DataViewerContainer = (): JSX.Element => {
   const [state, dispatch] = useReducer(rootReducer, initialState);

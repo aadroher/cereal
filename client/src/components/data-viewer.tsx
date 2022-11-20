@@ -7,7 +7,7 @@ import NameSelector from "./name-selector";
 import DateSelector from "./date-selector";
 import BinSizeSelector from "./bin-size-selector";
 
-import { DataPoint, Filters } from "../state";
+import { DataPoint, Filters } from "../state-management/reducer";
 
 type DataViewerProps = {
   isLoading: boolean;

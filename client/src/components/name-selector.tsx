@@ -1,7 +1,7 @@
 import React from "react";
 import "./name-selector.scss";
 
-import { DataPoint, Filters } from "../state";
+import { DataPoint, Filters } from "../state-management/reducer";
 
 type GetDataNames = (data: DataPoint[]) => string[];
 const getDataNames: GetDataNames = (data) =>

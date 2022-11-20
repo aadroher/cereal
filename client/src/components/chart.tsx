@@ -8,12 +8,11 @@ import {
   YAxis,
   Legend,
   Tooltip,
-  CustomizedProps,
 } from "recharts";
 import { faker } from "@faker-js/faker";
 import { DateTime } from "luxon";
 
-import { DataPoint, Filters } from "../state";
+import { DataPoint, Filters } from "../state-management/reducer";
 
 faker.seed(6);
 
