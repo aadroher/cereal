@@ -23,8 +23,6 @@
   },
   "include": [
     "src",
-    ,
-    "__stories__/data-viewer.stories.tsx",
-    "__tests__/data-viewer-mock-responses.tsx""__tests__/data-viewer-container.spec.tsx"
+    "__tests__"
   ]
 }
