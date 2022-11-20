@@ -16,9 +16,21 @@ class MetricsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'fails creating new metric if timestamp is missing' do
-    assert_raises do
+    assert_raises(ActiveRecord::RecordInvalid) do
       post metrics_url, params: {
         metric: {
+          name: 'some-label',
+          value: 42
+        }
+      }
+    end
+  end
+
+  test 'fails creating new metric if timestamp is a number' do
+    assert_raises(ActiveRecord::RecordInvalid) do
+      post metrics_url, params: {
+        metric: {
+          timestamp: 1989,
           name: 'some-label',
           value: 42
         }
@@ -65,7 +77,10 @@ class MetricsControllerTest < ActionDispatch::IntegrationTest
 
   test 'serves successful response with correct params' do
     get metrics_averages_url, params: {
-      from: DateTime.now, to: DateTime.now, names: ['some_label'], bin_size: 180
+      from: DateTime.now,
+      to: DateTime.now,
+      names: ['some_label'],
+      bin_size: 180
     }
 
     assert_response :success

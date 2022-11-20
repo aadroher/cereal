@@ -54,3 +54,5 @@ gem 'rubocop', '~> 1.39'
 gem 'faker', '~> 3.0'
 
 gem 'awesome_print', '~> 1.9'
+
+gem 'validates_timeliness'
