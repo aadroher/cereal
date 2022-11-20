@@ -65,7 +65,7 @@ class MetricsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'param is missing or the value is empty: from', error.message
   end
 
-  test 'fails fetching averages a ParameterMissing with only one missing param' do
+  test 'fails fetching averages with a ParameterMissing with only one missing param' do
     error = assert_raises(ActionController::ParameterMissing) do
       get metrics_averages_url, params: {
         from: DateTime.now, to: DateTime.now, names: ['some_label']
@@ -73,6 +73,32 @@ class MetricsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_equal 'param is missing or the value is empty: bin_size', error.message
+  end
+
+  test 'fails to fetch averages if from is not a valid datetime string' do
+    error = assert_raises(ActionController::BadRequest) do
+      get metrics_averages_url, params: {
+        from: 'nope',
+        to: DateTime.now,
+        names: ['some_label'],
+        bin_size: 180
+      }
+    end
+
+    assert_equal 'param is not well formed: from', error.message
+  end
+
+  test 'fails to fetch averages if to is greate or equal than to' do
+    error = assert_raises(ActionController::BadRequest) do
+      get metrics_averages_url, params: {
+        from: DateTime.now,
+        to: DateTime.now - 1.day,
+        names: ['some_label'],
+        bin_size: 180
+      }
+    end
+
+    assert_equal 'to should represent a date greater or equal than from', error.message
   end
 
   test 'serves successful response with correct params' do

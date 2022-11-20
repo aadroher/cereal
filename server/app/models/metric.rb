@@ -1,5 +1,5 @@
 class Metric < ApplicationRecord
-  validates :timestamp, presence: true
+  validates_presence_of :timestamp, :name, :value
 
   def self.averages(from:, to:, names:, bin_size:)
     # TODO: bin_size needs sanitised?
