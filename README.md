@@ -1,1 +1,1 @@
-# cereal
+# Cereal, as serial data viewer
