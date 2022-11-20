@@ -44,7 +44,6 @@ const DataViewerContainer = (): JSX.Element => {
         });
       }}
       onBinSizeChange={(newBinSize) => {
-        console.log({ newBinSize });
         handleBinSizeChange({
           state,
           dispatch,
