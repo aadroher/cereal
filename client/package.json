@@ -140,7 +140,7 @@
       "jest-watch-typeahead/filename",
       "jest-watch-typeahead/testname"
     ],
-    "resetMocks": true
+    "resetMocks": false
   },
   "babel": {
     "presets": [
@@ -160,6 +160,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@types/luxon": "^3.1.0",
     "jest-fetch-mock": "^3.0.3",
-    "luxon": "^3.1.0"
+    "luxon": "^3.1.0",
+    "resize-observer-polyfill": "^1.5.1"
   }
 }
