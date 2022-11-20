@@ -130,7 +130,7 @@ The current structure of the app is as follows:
 - As you can see on the [routes definition](./server/config/routes.rb):
   - All routes are placed on the `/api/v0`, leaving room for us to publish other versions of our API.
   - Only one POST route exists, for `/api/v0/metrics`
-  - Only one GET route exists, for `/api/v0/metrcis/averages`
+  - Only one GET route exists, for `/api/v0/metrics/averages`
 - `POST /api/v0/metrics` expects a body of the shape:
   ```
   {
@@ -139,7 +139,7 @@ The current structure of the app is as follows:
     value: Number
   }
   ```
-  Where `DateISOString` above stands for a string which is paresable into a Date following the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
+  Where `DateISOString` above stands for a string which is parseable into a Date following the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 - `GET /api/v0/metrics/averages` does not serve a collection of metric records but, as its name implies, agreggated averages for their values as a function of the values of the query string parameters included in the URL. These parameters are:
   - `from: DateISOString` which the defines the point in time from which we want to calculate the averages.
   - `to: DateISOString` which the defines the point in time until which we want to calculate the averages.
@@ -163,17 +163,17 @@ The current structure of the app is as follows:
   - `timestamp` represents the lower bound of the interval.
   - `values` holds a collection of key-value pairs, where the key is the name of the metric and the value the average of the metric records for that name in that period.
 - The application has a single [MetricsController controller](./server/app/controllers/metrics_controller.rb) which:
-  - Exposes the regular Rails method for creatinc metric records.
-  - Has a "custom" `averages` method with partially validates the URL query params and passess them donw to the model `Metric#averages` method.
-- In turn, the [Metric model](./server/app/models/metric.rb) has a collection class methods (are they called "static" in Ruby, too?) which call the DB and prepare the requested averages.
+  - Exposes the regular Rails method for creating metric records.
+  - Has a "custom" `averages` method with partially validates the URL query params and passess them down to the model `Metric.averages` class method.
+- In turn, the [Metric model](./server/app/models/metric.rb) has a collection of class methods (are they called "static" in Ruby, too?) which call the DB and prepare the requested averages.
 
 ### Storage
 
-- As you can see in [`Metric.averages`](./server/app/models/metric.rb#L4) most of the calculation of the averages is done on the DB itself. The metric records are grouped by both the value of `name` and the lower bound of the intervals of `bin_size` length in seconds. This lower bound is calculated by making use of the integer division function of SQLite on the numerical representation of the timestamp in seconds. 
+- As you can see in [`Metric.averages`](./server/app/models/metric.rb#L4) most of the calculation of the averages is done on the DB itself. The metric records are grouped by both the value of `name` and the lower bound of the intervals of `bin_size` length in seconds. This lower bound is calculated by making use of the integer division function of SQLite on the numerical representation of the timestamp in seconds.
 
 ## To Do and Next Steps
 
-No doubt that the code in this repo is still a work in progress and a bit rought on the edges. There are some caveats and improvements that I can already spot at its current stage.
+No doubt that the code in this repo is still a work in progress and a bit rough on the edges. There are some caveats and improvements that I can already spot at its current stage.
 
 These are notes on _some_ of them:
 
@@ -182,14 +182,14 @@ These are notes on _some_ of them:
 - At the moment, the client assumes that it knows all the different values of the `name` field of the metric records. This is, of course, not realistic. Maybe a new endpoint on the backend should be added so that it serves all the current values for it?
 
 ### Server
-- I am not sure about the logic which lives under [`Metric.averages`](./server/app/models/metric.rb#L4) belonging there. It does generate summaries on the current state of `Metric` instances in the DB but the instances it returns do not match with the shape of a `Metric` model. Maybe one should use spomething like [ActiveRecord::Aggregations::ClassMethods](https://api.rubyonrails.org/classes/ActiveRecord/Aggregations/ClassMethods.html). My knowledge of the best practices of Rails on this matter are still lacking.
+- I am not sure about the logic which lives under [`Metric.averages`](./server/app/models/metric.rb#L4) belonging there. It does generate summaries on the current state of `Metric` instances in the DB but the values it returns do not match with the shape of a `Metric` model. Maybe one should use something like [ActiveRecord::Aggregations::ClassMethods](https://api.rubyonrails.org/classes/ActiveRecord/Aggregations/ClassMethods.html)? My knowledge of the best practices of Rails on this matter is still lacking.
 
-- Related to the point above, it's not clear to me where should the guery params validation live. It's currently implemented on teh controller, but validation is normally defined on the model level in Rails. Or maybe this is the case only for record field validation before write operations on the DB?
+- Related to the point above, it's not clear to me where should the query params validation live. It's currently implemented on the controller, but validation is normally defined on the model level in Rails. Or maybe this is the case only for record field validation before write operations on the DB?
 
 - For now, there is no cache system whatsoever, and this is a use case which would certaintly benefit from it.
 
 ### Storage
 
-- The current implementation uses SQLite, which is what comes by default with Rails and is very convenient for demo purposes. However, this store is by no means adequate for such an application on production as it has [some patent limitations for this use case](https://www.sqlite.org/whentouse.html). Besides more complex data streaming solutions (like [Kafka](https://kafka.apache.org/) and the like) a good first approach would be to chose some other relational database better fit for the job as the clients for them are already quite mature. Never worked with it but [Timescale DB](https://www.timescale.com/), a fork of Postgres, looks promising.
-- Related to the item above, the current implementation of `Metric.averages` relies a lot on SQLite-specific features. Maybe there is a way in Ruby to represent that SQL calculation without it taking place in the Ruby runtime? As an abstract query builder which is DB agnostic but still lets us represent this?  
+- The current implementation uses SQLite, which is what comes by default with Rails and is very convenient for demo purposes. However, this store is by no means adequate for such an application on production as it has [some patent limitations for this use case](https://www.sqlite.org/whentouse.html). Besides more complex data streaming solutions (like [Kafka](https://kafka.apache.org/) and the like) a good first approach would be to chose some other relational database better fit for the job, as the clients for this kind of stores are already quite mature. Never worked with it but [Timescale DB](https://www.timescale.com/), a fork of Postgres, looks promising.
+- Related to the item above, the current implementation of `Metric.averages` relies a lot on SQLite-specific features. Maybe there is a way in Ruby to represent that SQL calculation without itself taking place in the Ruby runtime? Something like an abstract query builder which is DB agnostic but still lets us represent this?
   
