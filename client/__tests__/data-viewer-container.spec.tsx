@@ -7,9 +7,9 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import ResizeObserverPolyfill from "resize-observer-polyfill";
 import "jest-fetch-mock";
 
-import DataViewerContainer from "./data-viewer-container";
+import DataViewerContainer from "../src/containers/data-viewer-container";
 
-import { mockResponseBody } from "./data-viewer-mock-responses";
+import { mockResponseBody } from "../__fixtures__/mock-responses";
 
 window.ResizeObserver = ResizeObserverPolyfill;
 
