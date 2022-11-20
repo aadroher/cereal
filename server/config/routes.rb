@@ -6,9 +6,8 @@ Rails.application.routes.draw do
 
   scope path: '/api' do
     scope path: 'v0' do
-      get '/metrics', to: 'metrics#index'
-      get '/metrics/averages', to: 'metrics#averages'
       post '/metrics', to: 'metrics#create'
+      get '/metrics/averages', to: 'metrics#averages'
     end
   end
 end

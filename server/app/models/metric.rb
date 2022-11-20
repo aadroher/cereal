@@ -21,6 +21,8 @@ class Metric < ApplicationRecord
     )
   end
 
+  # TODO: Should we use a more specific name instead of the
+  # generic "hashes" or "h"?
   def self.flat_hashes(result)
     result.map do |instance|
       {
