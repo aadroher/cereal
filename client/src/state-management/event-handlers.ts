@@ -1,4 +1,4 @@
-import { fetchData } from "../data-fetcher";
+import { fetchData } from "../utils/data-fetcher";
 import { State, ActionType, Filters } from "../state";
 
 type DispatchDataFetch = (args: {
